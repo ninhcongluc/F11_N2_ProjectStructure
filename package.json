@@ -8,7 +8,7 @@
     "test": "mocha --timeout 60000"
   },
   "husky": {
-    "hook": {
+    "hooks": {
       "pre-commit": "lint-staged"
     }
   },
