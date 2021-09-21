@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const userController = require('./userController');
+const authMiddleware = require('../auth/authMiddleware');
 
 /**
  * @swagger
@@ -19,37 +20,47 @@ const userController = require('./userController');
  *
  */
 
-router.get('/users', userController.getAllUsers);
+router.get('/users', authMiddleware, userController.getAllUsers);
 
-/**
- * @swagger
- * /users/:id:
- *   get:
- *     summary: Retrieve a  user by search with id
- *     description: Get a user by userID.
- *     responses:
- *       200:
- *         description: Get A User By ID.
- *         content:
- *           application/json:
- */
 router.get('/users/:id', userController.getUser);
 
 /**
  * @swagger
  * /users:
  *   post:
- *     summary: Create a JSONPlaceholder user.
+ *     description: Create a user for application.
+ *     consumes:
+ *       - application/x-www-form-urlencoded
+ *     parameters:
+ *       - name: name
+ *         description: Name.
+ *         in: formData
+ *         required: true
+ *         type: string
+ *       - name: username
+ *         description: Username.
+ *         in: formData
+ *         required: true
+ *         type: string
+ *       - name: password
+ *         description: Password.
+ *         in: formData
+ *         required: true
+ *         type: string
+ *       - name: email
+ *         description: Email address.
+ *         in: formData
+ *         required: true
+ *         type: string
+ *       - name: status
+ *         description: Status
+ *         in: formData
+ *         required: true
+ *         type: string
  *     responses:
  *       201:
- *         description: Created
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
-
-*/
+ *         description: created
+ */
 router.post('/users', userController.createUser);
 
 module.exports = router;

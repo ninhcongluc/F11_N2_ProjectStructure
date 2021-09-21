@@ -9,7 +9,9 @@ const swaggerOptions = require('./components/config/swagger');
 const dbConfig = require('./components/config/db');
 const statusCode = require('./components/errors/http-code');
 // import routes
+const authRoutes = require('./components/auth/authAPI');
 const userRoutes = require('./components/users/userAPI');
+
 // import error handlers
 const { errorHandler } = require('./components/errors/errorHandler');
 
@@ -21,7 +23,10 @@ dotenv.config();
 dbConfig();
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+app.use(authRoutes);
 app.use(userRoutes);
 
 // unhandled Route

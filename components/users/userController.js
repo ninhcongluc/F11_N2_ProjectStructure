@@ -21,7 +21,7 @@ const getUser = async (req, res) => {
   }
 };
 
-const createUser = async (req, res, next) => {
+const createUser = async (req, res) => {
   const { name, username, password, email, status } = req.body;
   const isValidUser = await userValid.validate({
     name,
@@ -31,9 +31,7 @@ const createUser = async (req, res, next) => {
     status,
   });
   if (isValidUser.error) {
-    const err = new Error('Invalidate data');
-    err.statusCode = sc.BAD_REQUEST;
-    return next(err);
+    return res.send(isValidUser.error);
   }
   try {
     const user = await userService.addUser(
