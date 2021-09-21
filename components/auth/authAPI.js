@@ -8,7 +8,7 @@ const router = express.Router();
  * @swagger
  * /login:
  *   post:
- *     description: Create a user for application.
+ *     description: Login with username and password.
  *     consumes:
  *       - application/x-www-form-urlencoded
  *     parameters:
@@ -27,8 +27,44 @@ const router = express.Router();
  */
 router.post('/login', authController.login);
 
-router.post('/register', (req, res) => {
-  res.send('User register here');
-});
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     description: Register a new user.
+ *     consumes:
+ *       - application/x-www-form-urlencoded
+ *     parameters:
+ *       - name: name
+ *         description: Name
+ *         in: formData
+ *         required: true
+ *         type: string
+ *       - name: username
+ *         description: Username.
+ *         in: formData
+ *         required: true
+ *         type: string
+ *       - name: password
+ *         description: Password.
+ *         in: formData
+ *         required: true
+ *         type: string
+ *       - name: email
+ *         description: Email address.
+ *         in: formData
+ *         required: true
+ *         type: string
+ *       - name: status
+ *         description: Status.
+ *         in: formData
+ *         required: true
+ *         type: string
+ *
+ *     responses:
+ *       201:
+ *         description: Register
+ */
+router.post('/register', authController.register);
 
 module.exports = router;

@@ -16,6 +16,7 @@
     "local-storage": "^2.0.0",
     "mongoose": "^6.0.6",
     "morgan": "^1.10.0",
+    "node-pre-gyp": "^0.17.0",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6"
   },

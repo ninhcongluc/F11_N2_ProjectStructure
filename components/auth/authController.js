@@ -3,6 +3,7 @@ const ls = require('local-storage');
 
 const userService = require('../users/userService');
 const sc = require('../errors/http-code');
+const userValidation = require('../users/userValidation');
 
 const login = async (req, res, next) => {
   const { username, password } = req.body;
@@ -23,7 +24,34 @@ const login = async (req, res, next) => {
   }
   // create token
   const token = jwt.sign({ username }, process.env.SECRET_KEY, {
-    expiresIn: 100,
+    expiresIn: 1000,
+  });
+  ls.set('token', token);
+  return res.json({ token });
+};
+
+const register = async (req, res, next) => {
+  const users = await userService.findAllUsers();
+  const { name, username, password, email, status } = req.body;
+  const isValidUser = await userValidation.validate({
+    name,
+    username,
+    password,
+    email,
+    status,
+  });
+  if (isValidUser.error) {
+    return res.send({ error: isValidUser.error.message });
+  }
+  const isUser = users.some(u => u.username === username);
+  if (isUser) {
+    const error = new Error(`User ${username} has already been registered`);
+    error.statusCodes = sc.BAD_REQUEST;
+    return next(error);
+  }
+  const user = userService.addUser(name, username, password, email, status);
+  const token = jwt.sign({ username }, process.env.SECRET_KEY, {
+    expiresIn: 1000,
   });
   ls.set('token', token);
   return res.json({ token });
@@ -31,4 +59,5 @@ const login = async (req, res, next) => {
 
 module.exports = {
   login,
+  register,
 };

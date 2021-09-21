@@ -12,15 +12,9 @@ const authMiddleware = (req, res, next) => {
   try {
     const user = jwt.verify(accessToken, process.env.SECRET_KEY);
     req.user = user.username;
-    next();
+    return next();
   } catch (error) {
-    return res.status(sc.BAD_REQUEST).json({
-      errors: [
-        {
-          msg: 'Invalid Token',
-        },
-      ],
-    });
+    return res.status(sc.BAD_REQUEST).send({ error: error.message });
   }
 };
 

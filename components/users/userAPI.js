@@ -22,8 +22,6 @@ const authMiddleware = require('../auth/authMiddleware');
 
 router.get('/users', authMiddleware, userController.getAllUsers);
 
-router.get('/users/:id', userController.getUser);
-
 /**
  * @swagger
  * /users:
@@ -61,6 +59,10 @@ router.get('/users/:id', userController.getUser);
  *       201:
  *         description: created
  */
-router.post('/users', userController.createUser);
+router.post('/users', authMiddleware, userController.createUser);
+
+//for testing purposes
+router.get('/test/users', userController.getAllUsers);
+router.post('/test/users', userController.createUser);
 
 module.exports = router;

@@ -2,54 +2,38 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../index');
 
-// assertion style
 chai.should();
-
 chai.use(chaiHttp);
 
-describe('Task API', () => {
-  /**
-   * Test the GET route
-   */
-  describe('GET /users', () => {
-    it('it should get all users', done => {
+describe('Tetsting API', () => {
+  describe('Get all users /users', () => {
+    it('It should return list of users', done => {
       chai
         .request(server)
-        .get('/users')
-        .end((err, response) => {
-          response.should.have.status(200);
-          response.body.should.be.a('array');
+        .get('/test/users')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('array');
           done();
         });
     });
   });
-
-  /**
-   * Test the GET  by ID route
-   */
-  describe('GET /users/:id', () => {
-    it('it should get a user by id', done => {
+  describe('Testing for create user /users', () => {
+    it('It should return list of users', done => {
       chai
         .request(server)
-        .get('/users/61485dec26e11c23753507e2')
-        .end((err, response) => {
-          response.should.have.status(200);
-          response.should.be.a('object');
+        .post('/test/users')
+        .send({
+          name: 'ASAD',
+          username: 'anhluc123',
+          password: '123@123avx',
+          email: 'ninhcongluc@gmail.com',
+          status: 'user',
+        })
+        .end((err, res) => {
+          res.should.have.status(200);
           done();
         });
     });
   });
-
-  /**
-   * Test the POST route
-   */
-  /**
-   * Test the PUT route
-   */
-  /**
-   * Test the PATCH route
-   */
-  /**
-   * Test the DELETE route
-   */
 });
