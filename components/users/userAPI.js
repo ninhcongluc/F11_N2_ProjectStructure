@@ -61,7 +61,7 @@ router.get('/users', authMiddleware, userController.getAllUsers);
  */
 router.post('/users', authMiddleware, userController.createUser);
 
-//for testing purposes
+// For testing purposes
 router.get('/test/users', userController.getAllUsers);
 router.post('/test/users', userController.createUser);
 

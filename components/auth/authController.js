@@ -50,7 +50,7 @@ const register = async (req, res, next) => {
     return next(error);
   }
   const user = userService.addUser(name, username, password, email, status);
-  const token = jwt.sign({ username }, process.env.SECRET_KEY, {
+  const token = jwt.sign({ username: user.username }, process.env.SECRET_KEY, {
     expiresIn: 1000,
   });
   ls.set('token', token);

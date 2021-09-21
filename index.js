@@ -21,7 +21,7 @@ dotenv.config();
 // CONNECT DB
 dbConfig();
 
-//USE MIDDLEWARE
+// USE MIDDLEWARE
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

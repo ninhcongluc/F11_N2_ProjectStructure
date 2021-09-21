@@ -35,26 +35,26 @@ const createUser = async (req, res, next) => {
   } catch (error) {
     return res.status(sc.BAD_REQUEST).send({ error });
   }
-  // GET /users
-  const getAllUsers = async (req, res) => {
-    try {
-      const users = await userService.findAllUsers();
-      res.status(200).send(users);
-    } catch (err) {
-      res.status(400).send({ error: err });
-    }
-  };
+};
+// GET /users
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await userService.findAllUsers();
+    res.status(200).send(users);
+  } catch (err) {
+    res.status(400).send({ error: err });
+  }
+};
 
-  // GET /users/:id
-  const getUser = async (req, res) => {
-    const { id } = req.params;
-    try {
-      const user = await userService.findUserById(id);
-      res.status(sc.OK).send(user);
-    } catch (error) {
-      res.status(sc.BAD_REQUEST).send({ error });
-    }
-  };
+// GET /users/:id
+const getUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await userService.findUserById(id);
+    res.status(sc.OK).send(user);
+  } catch (error) {
+    res.status(sc.BAD_REQUEST).send({ error });
+  }
 };
 
 module.exports = {

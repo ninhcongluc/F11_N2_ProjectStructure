@@ -24,8 +24,8 @@ describe('Purpose for testing API', () => {
         .request(server)
         .post('/test/users')
         .send({
-          name: 'ASAD',
-          username: 'anhluc123',
+          name: 'Anh Luc',
+          username: 'andy1234',
           password: '123@123avx',
           email: 'ninhcongluc@gmail.com',
           status: 'user',
