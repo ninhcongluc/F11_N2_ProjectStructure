@@ -5,9 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon index.js",
-    "test": "mocha --timeout 60000",
-    "lint": "eslint '**/*.js",
-    "lint:fix": "prettier-eslint '**/*.js' --write"
+    "test": "mocha --timeout 60000"
   },
   "husky": {
     "hook": {
@@ -15,9 +13,9 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "yarn run lint:fix",
-      "git add"
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
     ]
   },
   "dependencies": {
