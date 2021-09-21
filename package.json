@@ -5,20 +5,37 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon index.js",
-    "test": "mocha --timeout 60000"
+    "test": "mocha --timeout 60000",
+    "lint": "eslint '**/*.js",
+    "lint:fix": "prettier-eslint '**/*.js' --write"
+  },
+  "husky": {
+    "hook": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "yarn run lint:fix",
+      "git add"
+    ]
   },
   "dependencies": {
+    "add": "^2.0.6",
     "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "husky": "^7.0.2",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
+    "lint-staged": "^11.1.2",
     "local-storage": "^2.0.0",
     "mongoose": "^6.0.6",
     "morgan": "^1.10.0",
-    "node-pre-gyp": "^0.17.0",
+    "node-gyp": "^8.2.0",
     "swagger-jsdoc": "^6.1.0",
-    "swagger-ui-express": "^4.1.6"
+    "swagger-ui-express": "^4.1.6",
+    "yarn": "^1.22.11"
   },
   "devDependencies": {
     "chai": "^4.3.4",
