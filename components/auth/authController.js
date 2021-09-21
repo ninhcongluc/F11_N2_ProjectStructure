@@ -15,7 +15,7 @@ const login = async (req, res, next) => {
     err.statusCodes = sc.BAD_REQUEST;
     return next(err);
   }
-  // compare password
+  // compare password <Hash password later>
   const isPassword = users.some(u => u.password === password);
   if (!isPassword) {
     const err = new Error(`Incorrect Password`);

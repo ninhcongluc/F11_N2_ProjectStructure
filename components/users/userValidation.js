@@ -1,5 +1,6 @@
 const Joi = require('joi');
 
+// standard definition of a user
 const userSchema = Joi.object().keys({
   name: Joi.string().min(5).max(30).required(),
   username: Joi.string().min(6).max(20).required(),

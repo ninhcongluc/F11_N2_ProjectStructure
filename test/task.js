@@ -5,7 +5,7 @@ const server = require('../index');
 chai.should();
 chai.use(chaiHttp);
 
-describe('Tetsting API', () => {
+describe('Purpose for testing API', () => {
   describe('Get all users /users', () => {
     it('It should return list of users', done => {
       chai
@@ -18,7 +18,7 @@ describe('Tetsting API', () => {
         });
     });
   });
-  describe('Testing for create user /users', () => {
+  describe('Create new user /users', () => {
     it('It should return list of users', done => {
       chai
         .request(server)
