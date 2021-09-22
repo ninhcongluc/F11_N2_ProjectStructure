@@ -11,10 +11,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: [
-    `${process.cwd()}/components/users/userAPI.js`,
-    `${process.cwd()}/components/auth/authAPI.js`,
-  ],
+  apis: [`${process.cwd()}/components/**/**API.js`],
 };
 
 module.exports = swaggerOptions;

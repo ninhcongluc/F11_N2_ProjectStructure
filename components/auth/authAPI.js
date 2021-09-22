@@ -8,7 +8,9 @@ const router = express.Router();
  * @swagger
  * /login:
  *   post:
- *     description: Login with username and password.
+ *     summary: Login with username and password.
+ *     tags:
+ *      - auth
  *     consumes:
  *       - application/x-www-form-urlencoded
  *     parameters:
@@ -31,7 +33,9 @@ router.post('/login', authController.login);
  * @swagger
  * /register:
  *   post:
- *     description: Register a new user.
+ *     summary: Register a new user.
+ *     tags:
+ *       - auth
  *     consumes:
  *       - application/x-www-form-urlencoded
  *     parameters:

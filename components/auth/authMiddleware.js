@@ -1,12 +1,12 @@
 const ls = require('local-storage');
 const jwt = require('jsonwebtoken');
-const sc = require('../errors/http-code');
+const { StatusCodes } = require('http-status-codes');
 
 const authMiddleware = (req, res, next) => {
   const accessToken = ls.get('token');
   if (!accessToken) {
     const error = new Error('NOT FOUND TOKEN');
-    res.statusCode = sc.UNAUTHORIZED;
+    error.statusCode = StatusCodes.UNAUTHORIZED;
     return next(error);
   }
   try {
@@ -14,7 +14,7 @@ const authMiddleware = (req, res, next) => {
     req.user = user.username;
     return next();
   } catch (error) {
-    return res.status(sc.BAD_REQUEST).send({ error: error.message });
+    return res.status(StatusCodes.BAD_REQUEST).send({ error: error.message });
   }
 };
 

@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 const ls = require('local-storage');
+const { StatusCodes } = require('http-status-codes');
 
 const userService = require('../users/userService');
-const sc = require('../errors/http-code');
 const userValidation = require('../users/userValidation');
 
 const login = async (req, res, next) => {
@@ -12,14 +12,14 @@ const login = async (req, res, next) => {
   // check user exist on database
   if (!user) {
     const err = new Error(`User ${username} not found`);
-    err.statusCodes = sc.BAD_REQUEST;
+    err.statusCodes = StatusCodes.BAD_REQUEST;
     return next(err);
   }
   // compare password <Hash password later>
   const isPassword = users.some(u => u.password === password);
   if (!isPassword) {
     const err = new Error(`Incorrect Password`);
-    err.statusCodes = sc.BAD_REQUEST;
+    err.statusCodes = StatusCodes.BAD_REQUEST;
     return next(err);
   }
   // create token
@@ -46,7 +46,7 @@ const register = async (req, res, next) => {
   const isUser = users.some(u => u.username === username);
   if (isUser) {
     const error = new Error(`User ${username} has already been registered`);
-    error.statusCodes = sc.BAD_REQUEST;
+    error.statusCodes = StatusCodes.BAD_REQUEST;
     return next(error);
   }
   const user = userService.addUser(name, username, password, email, status);
