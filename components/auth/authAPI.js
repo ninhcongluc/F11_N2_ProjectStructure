@@ -10,7 +10,7 @@ const router = express.Router();
  *   post:
  *     summary: Login with username and password.
  *     tags:
- *      - auth
+ *      - Auth
  *     consumes:
  *       - application/x-www-form-urlencoded
  *     parameters:
@@ -35,7 +35,7 @@ router.post('/login', authController.login);
  *   post:
  *     summary: Register a new user.
  *     tags:
- *       - auth
+ *       - Auth
  *     consumes:
  *       - application/x-www-form-urlencoded
  *     parameters:

@@ -6,13 +6,13 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 const { StatusCodes } = require('http-status-codes');
 // Import config
-const swaggerOptions = require('./components/config/swagger');
-const dbConfig = require('./components/config/db');
+const swaggerOptions = require('./config/swagger');
+const dbConfig = require('./config/db');
 // Import routes
 const authRoutes = require('./components/auth/authAPI');
 const userRoutes = require('./components/users/userAPI');
 // Import error handlers
-const { errorHandler } = require('./components/errors/errorHandler');
+const { errorHandler } = require('./errors/errorHandler');
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 const app = express();

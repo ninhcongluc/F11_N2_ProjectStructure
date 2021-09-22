@@ -10,7 +10,7 @@ const authMiddleware = require('../auth/authMiddleware');
  *   get:
  *     summary: Retrieve a list of JSONPlaceholder users
  *     tags:
- *       - users
+ *       - User
  *     description: Retrieve a list of users from JSONPlaceholder. Can be used to populate a list of fake users when prototyping or testing an API.
  *     responses:
  *       200:
@@ -30,7 +30,7 @@ router.get('/users', authMiddleware, userController.getAllUsers);
  *   post:
  *     summary: Create a user for application.
  *     tags:
- *       - users
+ *       - User
  *     consumes:
  *       - application/x-www-form-urlencoded
  *     parameters:
