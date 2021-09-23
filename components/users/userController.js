@@ -1,17 +1,19 @@
 const { StatusCodes } = require('http-status-codes');
+const bcrypt = require('bcryptjs');
 const userService = require('./userService');
 const userValid = require('./userValidation');
+
+const saltRounds = 10;
 
 // POST: /users
 const createUser = async (req, res, next) => {
   const users = await userService.findAllUsers();
-  const { name, username, password, email, status } = req.body;
+  const { name, username, password, email } = req.body;
   const isValidUser = await userValid.validate({
     name,
     username,
     password,
     email,
-    status,
   });
   if (isValidUser.error) {
     return res.send(isValidUser.error);
@@ -23,13 +25,9 @@ const createUser = async (req, res, next) => {
     return next(error);
   }
   try {
-    const user = await userService.addUser(
-      name,
-      username,
-      password,
-      email,
-      status
-    );
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashPassword = await bcrypt.hash(password, salt);
+    const user = await userService.addUser(name, username, hashPassword, email);
 
     return res.status(StatusCodes.OK).send(user);
   } catch (error) {
@@ -40,16 +38,15 @@ const createUser = async (req, res, next) => {
 const getAllUsers = async (req, res) => {
   try {
     const users = await userService.findAllUsers();
-    res.status(200).send(users);
+    res.status(StatusCodes.OK).send(users);
   } catch (err) {
-    res.status(400).send({ error: err });
+    res.status(StatusCodes.BAD_REQUEST).send({ error: err });
   }
 };
 
 // GET /users/:id
 const getUser = async (req, res, next) => {
   const { id } = req.params;
-  console.log(id);
   const users = await userService.findAllUsers();
   const isCorrectId = users.some(user => id === user.id);
   if (!isCorrectId) {

@@ -16,8 +16,12 @@ const addUser = (name, username, password, email, status) => {
   return user.save();
 };
 
+const updateUser = (id, userUpdate) =>
+  User.findOneAndUpdate({ _id: id }, userUpdate);
+
 module.exports = {
   findAllUsers,
   findUserById,
   addUser,
+  updateUser,
 };

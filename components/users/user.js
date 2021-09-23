@@ -10,6 +10,7 @@ const userSchema = new Schema({
   username: {
     type: 'string',
     required: true,
+    unique: true,
   },
   password: {
     type: 'string',
@@ -17,6 +18,7 @@ const userSchema = new Schema({
   },
   email: {
     type: 'string',
+    unique: true,
     required: true,
   },
   created_at: {
@@ -27,8 +29,8 @@ const userSchema = new Schema({
   },
   status: {
     type: 'string',
-    enum: ['user', 'admin'],
-    default: 'user',
+    enum: ['inactive', 'active'],
+    default: 'inactive',
   },
 });
 userSchema.pre('save', function createDate(next) {

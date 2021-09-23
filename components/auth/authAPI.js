@@ -71,4 +71,6 @@ router.post('/login', authController.login);
  */
 router.post('/register', authController.register);
 
+router.post('/auth/verify', authController.verifyEmail);
+
 module.exports = router;

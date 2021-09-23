@@ -12,7 +12,7 @@ const dbConfig = require('./config/db');
 const authRoutes = require('./components/auth/authAPI');
 const userRoutes = require('./components/users/userAPI');
 // Import error handlers
-const { errorHandler } = require('./errors/errorHandler');
+const { errorHandler } = require('./helpers/errorHandler');
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 const app = express();
