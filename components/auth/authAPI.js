@@ -54,13 +54,13 @@ router.post('/login', authController.login);
  *         in: formData
  *         required: true
  *         type: string
- *       - name: email
- *         description: Email address.
+ *       - name: repeatPassword
+ *         description: Repeat pass word.
  *         in: formData
  *         required: true
  *         type: string
- *       - name: status
- *         description: Status.
+ *       - name: email
+ *         description: Email address.
  *         in: formData
  *         required: true
  *         type: string

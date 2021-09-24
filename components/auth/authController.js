@@ -12,10 +12,13 @@ const saltRounds = 10;
 const login = async (req, res, next) => {
   const { username, password } = req.body;
   const users = await userService.findAllUsers();
-  const user = users.find(u => username === u.username);
+  const user = users.find(
+    u =>
+      username === u.username || (username === u.email && u.status === 'active')
+  );
   // check user exist on database
   if (!user) {
-    const err = new Error(`User ${username} not found`);
+    const err = new Error(`Username or email not found`);
     err.statusCodes = StatusCodes.BAD_REQUEST;
     return next(err);
   }
@@ -102,7 +105,7 @@ const verifyEmail = async (req, res, next) => {
     const user = await userService.findUserById(id);
     if (!user || !token) {
       const error = new Error('User not found, invalid link');
-      res.statusCodes = StatusCodes.BAD_REQUEST;
+      error.statusCodes = StatusCodes.BAD_REQUEST;
       return next(error);
     }
     const userUpdate = {
@@ -116,7 +119,9 @@ const verifyEmail = async (req, res, next) => {
 
     return res.status(StatusCodes.OK).send('Email has been active');
   } catch (err) {
-    return res.status(StatusCodes.BAD_REQUEST).send(err);
+    const error = new Error('User not found, invalid link');
+    error.statusCodes = StatusCodes.BAD_REQUEST;
+    return next(error);
   }
 };
 
