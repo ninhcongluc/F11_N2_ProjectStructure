@@ -4,6 +4,8 @@ const { User } = require('./user');
 const findAllUsers = () => User.find();
 // find user by id
 const findUserById = id => User.findById(id);
+// find User by Username
+const findUserByUsername = username => User.findOne({ username });
 // add user
 const addUser = (name, username, password, email, status) => {
   const user = new User({
@@ -26,6 +28,7 @@ const findUser = (props, value) => User.findOne({ props: value });
 module.exports = {
   findAllUsers,
   findUserById,
+  findUserByUsername,
   addUser,
   updateUserByUsername,
   updateUserById,

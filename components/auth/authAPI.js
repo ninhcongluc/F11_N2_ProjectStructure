@@ -84,4 +84,10 @@ router.patch(
   authController.updateProfile
 );
 
+router.patch(
+  '/auth/change_pass',
+  authMiddleware,
+  authController.changePassword
+);
+
 module.exports = router;

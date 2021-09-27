@@ -197,6 +197,36 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res, next) => {
+  const { username } = req.user;
+  const { oldPassword, newPassword, confirmPassword } = req.body;
+  try {
+    const user = await userService.findUserByUsername(username);
+    const isCorrect = await bcrypt.compare(oldPassword, user.password);
+    if (!isCorrect) {
+      const err = new Error(`Password Wrong !`);
+      err.statusCode = StatusCodes.BAD_REQUEST;
+      return next(err);
+    }
+    const isValidatePass = authValidation.resetPassSchema.validate({
+      newPassword,
+      confirmPassword,
+    });
+    if (isValidatePass.error) {
+      return res.send({ error: isValidatePass.error.message });
+    }
+    // hash password
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashPassword = await bcrypt.hash(newPassword, salt);
+    await userService.updateUserByUsername(username, {
+      password: hashPassword,
+    });
+    res.status(StatusCodes.OK).send('Password has been changed');
+  } catch (error) {
+    res.send(error);
+  }
+};
+
 module.exports = {
   login,
   register,
@@ -204,4 +234,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   updateProfile,
+  changePassword,
 };
