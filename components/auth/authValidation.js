@@ -23,4 +23,19 @@ const registerSchema = Joi.object().keys({
     .required(),
 });
 
-module.exports = registerSchema;
+const resetPassSchema = Joi.object().keys({
+  newPassword: Joi.string()
+    .password({
+      min: 8,
+      max: 200,
+      lowercase: true,
+      uppercase: true,
+      number: true,
+      special: true,
+      // count: 4, // 4 props true => pass
+    })
+    .required(),
+  confirmPassword: Joi.string().match('newPassword').required(),
+});
+
+module.exports = { registerSchema, resetPassSchema };

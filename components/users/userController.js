@@ -21,7 +21,7 @@ const createUser = async (req, res, next) => {
   const isUser = users.some(u => u.username === username);
   if (isUser) {
     const error = new Error(`User ${username} has already been registered`);
-    error.statusCodes = StatusCodes.BAD_REQUEST;
+    error.statusCode = StatusCodes.BAD_REQUEST;
     return next(error);
   }
   try {
@@ -51,7 +51,7 @@ const getUser = async (req, res, next) => {
   const isCorrectId = users.some(user => id === user.id);
   if (!isCorrectId) {
     const error = new Error(`Can not find user with id ${id}`);
-    error.statusCodes = StatusCodes.BAD_REQUEST;
+    error.statusCode = StatusCodes.BAD_REQUEST;
     return next(error);
   }
   try {

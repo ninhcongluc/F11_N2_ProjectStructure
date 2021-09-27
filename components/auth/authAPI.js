@@ -73,4 +73,8 @@ router.post('/register', authController.register);
 
 router.post('/auth/verify', authController.verifyEmail);
 
+router.post('/auth/forgot_pass', authController.forgotPassword);
+
+router.put('/auth/reset_pass/:token', authController.resetPassword);
+
 module.exports = router;
