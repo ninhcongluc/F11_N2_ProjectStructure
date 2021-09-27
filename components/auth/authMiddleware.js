@@ -11,7 +11,7 @@ const authMiddleware = (req, res, next) => {
   }
   try {
     const user = jwt.verify(accessToken, process.env.SECRET_KEY);
-    req.user = user.username;
+    req.user = user;
     return next();
   } catch (error) {
     return res.status(StatusCodes.BAD_REQUEST).send({ error: error.message });

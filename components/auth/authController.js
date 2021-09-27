@@ -114,7 +114,7 @@ const verifyEmail = async (req, res, next) => {
       email: user.email,
       status: 'active',
     };
-    await userService.updateUser(id, userUpdate);
+    await userService.updateUserById(id, userUpdate);
 
     return res.status(StatusCodes.OK).send('Email has been active');
   } catch (err) {
@@ -179,10 +179,21 @@ const resetPassword = async (req, res) => {
       password: hashPassword,
       email: decoded.email,
     };
-    await userService.updateUser(decoded.id, user);
+    await userService.updateUserById(decoded.id, user);
     return res.status(StatusCodes.OK).send('Updated password successfully');
   } catch (error) {
     return res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+
+const updateProfile = async (req, res) => {
+  const { username } = req.user;
+  // const { name } = req.body;
+  try {
+    await userService.updateUserByUsername(username, req.body);
+    res.status(StatusCodes.OK).send('Your profile will be updated');
+  } catch (error) {
+    res.send(error);
   }
 };
 
@@ -192,4 +203,5 @@ module.exports = {
   verifyEmail,
   forgotPassword,
   resetPassword,
+  updateProfile,
 };
