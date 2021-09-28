@@ -71,10 +71,23 @@ const updateAlbum = async (req, res) => {
   }
 };
 
+const addUserToAlbum = async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req.body;
+  try {
+    await albumService.addUserToAlbum(id, userId);
+    res.status(StatusCodes.OK).send(`Added Successfully`);
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send(`Added Fail
+    Error Message: ${error.message}`);
+  }
+};
+
 module.exports = {
   createAlbum,
   getAllAlbum,
   getAlbumById,
   deleteAlbumById,
   updateAlbum,
+  addUserToAlbum,
 };

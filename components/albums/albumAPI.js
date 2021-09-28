@@ -2,20 +2,145 @@ const express = require('express');
 
 const router = express.Router();
 const albumController = require('./albumController');
+const authMiddleware = require('../auth/authMiddleware');
 
 // create album
-router.post('/album', albumController.createAlbum);
+router.post('/albums', authMiddleware, albumController.createAlbum);
 
-// get album
-router.get('/album', albumController.getAllAlbum);
+/**
+ * @swagger
+ * /albums:
+ *   get:
+ *     summary: Get all of albums
+ *     tags:
+ *       - Album
+ *     description: Return list of albums
+ *     responses:
+ *       200:
+ *         description: Get List of user successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *       400:
+ *           description: Bad request
+ *
+ */
+router.get('/albums', authMiddleware, albumController.getAllAlbum);
 
-// get album by id
-router.get('/album/:id', albumController.getAlbumById);
+/**
+ * @swagger
+ * /albums/{albumId}:
+ *   get:
+ *     summary: Get one album by id
+ *     tags:
+ *       - Album
+ *     parameters:
+ *      - in: path
+ *        name: albumId
+ *        required: true
+ *        description: The Id of the album to return
+ *     description: Return album object
+ *     responses:
+ *       200:
+ *         description: Successfully.
+ *       400:
+ *         description: Invalid ID supplied
+ *       404:
+ *         description: Album not found
+ *
+ *
+ */
+router.get('/albums/:id', authMiddleware, albumController.getAlbumById);
 
-// delete album by id
-router.delete('/album/:id', albumController.deleteAlbumById);
+/**
+ * @swagger
+ * /albums/{albumId}:
+ *   delete:
+ *     summary: Delete a album by id
+ *     tags:
+ *       - Album
+ *     parameters:
+ *      - in: path
+ *        name: albumId
+ *        required: true
+ *        description: The Id of the album to delete
+ *     description: Return album object
+ *     responses:
+ *       200:
+ *         description: DELETE Successfully.
+ *       400:
+ *         description: Invalid ID supplied
+ *       404:
+ *         description: Album not found
+ *
+ *
+ */
+router.delete('/albums/:id', authMiddleware, albumController.deleteAlbumById);
 
-// update album
-router.put('/album/:id', albumController.updateAlbum);
+/**
+ * @swagger
+ * /albums/{albumId}:
+ *   put:
+ *     summary: Update Album by Id
+ *     tags:
+ *       - Album
+ *     parameters:
+ *      - in: path
+ *        name: albumId
+ *        required: true
+ *        description: The Id of the album to update
+ *      - in: formData
+ *        name: name
+ *        required: true
+ *        description: The name of the album to update
+ *      - in: formData
+ *        name: description
+ *        required: true
+ *        description: The description of the album to update
+ *      - in: formData
+ *        name: status
+ *        required: true
+ *        description: The status of the album to update
+ *     description: return updated successfully
+ *     responses:
+ *       200:
+ *         description: UPDATED Successfully.
+ *       400:
+ *         description: Invalid ID supplied
+ *       404:
+ *         description: Album not found
+ *
+ *
+ */
+router.put('/albums/:id', authMiddleware, albumController.updateAlbum);
+
+/**
+ * @swagger
+ * /albums/{albumId}:
+ *   patch:
+ *     summary: Add user to Album
+ *     tags:
+ *       - Album
+ *     parameters:
+ *      - in: path
+ *        name: albumId
+ *        required: true
+ *        description: The Id of the album to add user
+ *      - in: formData
+ *        name: userId
+ *        required: true
+ *        description: Id of the user want to add
+ *     responses:
+ *       200:
+ *         description: Added Successfully.
+ *       400:
+ *         description: Invalid ID supplied
+ *       404:
+ *         description: Album not found
+ *
+ *
+ */
+router.patch('/albums/:id', authMiddleware, albumController.addUserToAlbum);
 
 module.exports = router;

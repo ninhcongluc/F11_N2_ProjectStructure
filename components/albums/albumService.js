@@ -11,6 +11,12 @@ const findAlbumById = id => Album.findById(id);
 
 const findAlbumAndDelete = id => Album.findOneAndDelete({ _id: id });
 
+const addUserToAlbum = (albumId, userId) =>
+  Album.findByIdAndUpdate(
+    albumId,
+    { $push: { users: userId } },
+    { new: true, useFindAndModify: false }
+  );
 const findAlbumAndUpdate = (id, newAlbum) =>
   Album.findByIdAndUpdate({ _id: id }, newAlbum);
 
@@ -20,4 +26,5 @@ module.exports = {
   findAlbumById,
   findAlbumAndDelete,
   findAlbumAndUpdate,
+  addUserToAlbum,
 };
