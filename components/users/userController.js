@@ -2,6 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const bcrypt = require('bcryptjs');
 const userService = require('./userService');
 const userValid = require('./userValidation');
+const authValidation = require('../auth/authValidation');
 
 const saltRounds = 10;
 
@@ -62,8 +63,51 @@ const getUser = async (req, res, next) => {
   }
 };
 
+const updateProfile = async (req, res) => {
+  const { username } = req.user;
+  // const { name } = req.body;
+  try {
+    await userService.updateUserByUsername(username, req.body);
+    res.status(StatusCodes.OK).send('Your profile will be updated');
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+const changePassword = async (req, res, next) => {
+  const { username } = req.user;
+  const { oldPassword, newPassword, confirmPassword } = req.body;
+  try {
+    const user = await userService.findUserByUsername(username);
+    const isCorrect = await bcrypt.compare(oldPassword, user.password);
+    if (!isCorrect) {
+      const err = new Error(`Password Wrong !`);
+      err.statusCode = StatusCodes.BAD_REQUEST;
+      return next(err);
+    }
+    const isValidatePass = authValidation.resetPassSchema.validate({
+      newPassword,
+      confirmPassword,
+    });
+    if (isValidatePass.error) {
+      return res.send({ error: isValidatePass.error.message });
+    }
+    // hash password
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashPassword = await bcrypt.hash(newPassword, salt);
+    await userService.updateUserByUsername(username, {
+      password: hashPassword,
+    });
+    return res.status(StatusCodes.OK).send('Password has been changed');
+  } catch (error) {
+    return res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUser,
   createUser,
+  updateProfile,
+  changePassword,
 };
