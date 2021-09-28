@@ -221,9 +221,9 @@ const changePassword = async (req, res, next) => {
     await userService.updateUserByUsername(username, {
       password: hashPassword,
     });
-    res.status(StatusCodes.OK).send('Password has been changed');
+    return res.status(StatusCodes.OK).send('Password has been changed');
   } catch (error) {
-    res.send(error);
+    return res.status(StatusCodes.BAD_REQUEST).send(error);
   }
 };
 

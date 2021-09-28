@@ -1,24 +1,14 @@
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
-const userSchema = new Schema({
+
+const albumSchema = new Schema({
   name: {
     type: 'string',
     required: true,
-    trim: true,
   },
-  username: {
+  description: {
     type: 'string',
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: 'string',
-    required: true,
-  },
-  email: {
-    type: 'string',
-    unique: true,
     required: true,
   },
   created_at: {
@@ -29,17 +19,18 @@ const userSchema = new Schema({
   },
   status: {
     type: 'string',
-    enum: ['inactive', 'active'],
-    default: 'inactive',
+    enum: ['private', 'public'],
+    default: 'public',
   },
-  albums: [
+  users: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Album',
+      ref: 'User',
     },
   ],
 });
-userSchema.pre('save', function createDate(next) {
+
+albumSchema.pre('save', function createDate(next) {
   const now = new Date();
   this.updated_at = now;
   if (!this.created_at) {
@@ -48,6 +39,6 @@ userSchema.pre('save', function createDate(next) {
   next();
 });
 
-const User = mongoose.model('User', userSchema);
+const Album = mongoose.model('Album', albumSchema);
 
-module.exports = User;
+module.exports = Album;

@@ -11,6 +11,7 @@ const dbConfig = require('./config/db');
 // Import routes
 const authRoutes = require('./components/auth/authAPI');
 const userRoutes = require('./components/users/userAPI');
+const albumRoutes = require('./components/albums/albumAPI');
 // Import error handlers
 const { errorHandler } = require('./helpers/errorHandler');
 
@@ -28,6 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use(authRoutes);
 app.use(userRoutes);
+app.use(albumRoutes);
 
 // ROUTE NOT FOUND
 app.use('*', (req, res, next) => {
