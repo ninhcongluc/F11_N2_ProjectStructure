@@ -30,9 +30,18 @@ const login = async (req, res, next) => {
     return next(err);
   }
   // create token
-  const token = jwt.sign({ username }, process.env.SECRET_KEY, {
-    expiresIn: '1h',
-  });
+  const token = jwt.sign(
+    {
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      email: user.email,
+    },
+    process.env.SECRET_KEY,
+    {
+      expiresIn: '1h',
+    }
+  );
   ls.set('token', token);
   return res.json({ token });
 };
@@ -186,53 +195,10 @@ const resetPassword = async (req, res) => {
   }
 };
 
-const updateProfile = async (req, res) => {
-  const { username } = req.user;
-  // const { name } = req.body;
-  try {
-    await userService.updateUserByUsername(username, req.body);
-    res.status(StatusCodes.OK).send('Your profile will be updated');
-  } catch (error) {
-    res.send(error);
-  }
-};
-
-const changePassword = async (req, res, next) => {
-  const { username } = req.user;
-  const { oldPassword, newPassword, confirmPassword } = req.body;
-  try {
-    const user = await userService.findUserByUsername(username);
-    const isCorrect = await bcrypt.compare(oldPassword, user.password);
-    if (!isCorrect) {
-      const err = new Error(`Password Wrong !`);
-      err.statusCode = StatusCodes.BAD_REQUEST;
-      return next(err);
-    }
-    const isValidatePass = authValidation.resetPassSchema.validate({
-      newPassword,
-      confirmPassword,
-    });
-    if (isValidatePass.error) {
-      return res.send({ error: isValidatePass.error.message });
-    }
-    // hash password
-    const salt = await bcrypt.genSalt(saltRounds);
-    const hashPassword = await bcrypt.hash(newPassword, salt);
-    await userService.updateUserByUsername(username, {
-      password: hashPassword,
-    });
-    return res.status(StatusCodes.OK).send('Password has been changed');
-  } catch (error) {
-    return res.status(StatusCodes.BAD_REQUEST).send(error);
-  }
-};
-
 module.exports = {
   login,
   register,
   verifyEmail,
   forgotPassword,
   resetPassword,
-  updateProfile,
-  changePassword,
 };

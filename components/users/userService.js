@@ -25,6 +25,20 @@ const updateUserById = (id, userUpdate) =>
 
 // find user by props
 const findUser = (props, value) => User.findOne({ props: value });
+
+const addPhotoToUser = (userId, photo) =>
+  User.findByIdAndUpdate(
+    userId,
+    { $push: { photos: photo.id } },
+    { new: true, useFindAndModify: false }
+  );
+
+const addAlbumToUser = (userId, album) =>
+  User.findByIdAndUpdate(
+    userId,
+    { $push: { albums: album.id } },
+    { new: true, useFindAndModify: false }
+  );
 module.exports = {
   findAllUsers,
   findUserById,
@@ -33,4 +47,6 @@ module.exports = {
   updateUserByUsername,
   updateUserById,
   findUser,
+  addPhotoToUser,
+  addAlbumToUser,
 };

@@ -34,8 +34,14 @@ const userSchema = new Schema({
   },
   albums: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Album',
+    },
+  ],
+  photos: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Photo',
     },
   ],
 });

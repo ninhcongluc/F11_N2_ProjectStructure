@@ -2,15 +2,21 @@ const { StatusCodes } = require('http-status-codes');
 
 const albumService = require('./albumService');
 const albumValidation = require('./albumValidation');
+const userService = require('../users/userService');
 
 const createAlbum = async (req, res) => {
   const { name, description } = req.body;
-  const isValid = await albumValidation.validate({ name, description });
+  const userId = req.user.id;
+  const isValid = await albumValidation.validate({
+    name,
+    description,
+  });
   if (isValid.error) {
     return res.status(StatusCodes.BAD_REQUEST).send(isValid.error.message);
   }
   try {
-    await albumService.createAlbum(name, description);
+    const album = await albumService.createAlbum(name, description);
+    await userService.addAlbumToUser(userId, album);
     return res
       .status(StatusCodes.OK)
       .send(`Album with name: ${name} is added successfully`);
@@ -71,23 +77,10 @@ const updateAlbum = async (req, res) => {
   }
 };
 
-const addUserToAlbum = async (req, res) => {
-  const { id } = req.params;
-  const { userId } = req.body;
-  try {
-    await albumService.addUserToAlbum(id, userId);
-    res.status(StatusCodes.OK).send(`Added Successfully`);
-  } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).send(`Added Fail
-    Error Message: ${error.message}`);
-  }
-};
-
 module.exports = {
   createAlbum,
   getAllAlbum,
   getAlbumById,
   deleteAlbumById,
   updateAlbum,
-  addUserToAlbum,
 };

@@ -22,10 +22,17 @@ const albumSchema = new Schema({
     enum: ['private', 'public'],
     default: 'public',
   },
+  created_by: { type: Schema.Types.ObjectId, ref: 'User' },
   users: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+    },
+  ],
+  photos: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Photo',
     },
   ],
 });
